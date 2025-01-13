@@ -1,5 +1,6 @@
 #include QMK_KEYBOARD_H
 #include "version.h"
+#include "features/achordion.h"
 #define MOON_LED_LEVEL LED_LEVEL
 #define ML_SAFE_RANGE SAFE_RANGE
 
@@ -57,6 +58,7 @@ void keyboard_post_init_user(void) {
 }
 
 
+
 const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
     [0] = { {131,255,255}, {134,255,213}, {0,245,245}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {152,255,255}, {131,255,255}, {41,255,255}, {131,255,255}, {131,255,255}, {152,255,255}, {131,255,255}, {0,245,245}, {131,255,255}, {131,255,255}, {152,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {152,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {85,203,158}, {131,255,255}, {243,222,234}, {0,204,255}, {0,204,255}, {32,255,234}, {234,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {152,255,255}, {131,255,255}, {131,255,255}, {152,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {152,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {152,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {152,255,255}, {131,255,255}, {146,224,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {85,203,158}, {131,255,255}, {243,222,234}, {169,120,255}, {169,120,255}, {32,255,234}, {234,255,255} },
 
@@ -112,6 +114,7 @@ bool rgb_matrix_indicators_user(void) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  if (!process_achordion(keycode, record)) { return false; }
   switch (keycode) {
 
     case RGB_SLD:
@@ -222,3 +225,22 @@ void dance_0_reset(tap_dance_state_t *state, void *user_data) {
 tap_dance_action_t tap_dance_actions[] = {
         [DANCE_0] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_0, dance_0_finished, dance_0_reset),
 };
+
+
+
+void matrix_scan_user(void) {
+  achordion_task();
+}
+
+bool achordion_eager_mod(uint8_t mod) {
+  switch (mod) {
+    case MOD_LSFT:
+    case MOD_RSFT:
+    case MOD_LCTL:
+    case MOD_RCTL:
+      return true;  // Eagerly apply Shift and Ctrl mods.
+
+    default:
+      return false;
+  }
+}
