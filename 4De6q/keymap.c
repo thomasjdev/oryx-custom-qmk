@@ -243,11 +243,11 @@ bool achordion_eager_mod(uint8_t mod) {
 }
 
 uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
-  switch (tap_hold_keycode) {
-    case HOME_SC:
-    case HOME_Z:
-      return 0;  // Bypass Achordion for these keys.
-  }
+//  switch (tap_hold_keycode) {
+//    case HOME_SC:
+//    case HOME_Z:
+//      return 0;  // Bypass Achordion for these keys.
+//  }
 
   return 800;  // Otherwise use a timeout of 800 ms.
 }
