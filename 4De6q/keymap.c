@@ -199,27 +199,11 @@ void matrix_scan_user(void) {
   achordion_task();
 }
 
-bool achordion_eager_mod(uint8_t mod) {
-  switch (mod) {
-    case MOD_LSFT:
-    case MOD_RSFT:
-    case MOD_LCTL:
-    case MOD_RCTL:
-      return true;  // Eagerly apply Shift and Ctrl mods.
-
-    default:
-      return false;
-  }
-}
-
 uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
-//  switch (tap_hold_keycode) {
-//    case HOME_SC:
-//    case HOME_Z:
-//      return 0;  // Bypass Achordion for these keys.
-//  }
-
-  return 800;  // Otherwise use a timeout of 800 ms.
+ switch (tap_hold_keycode) {
+    default:
+      return 800;  // Otherwise use a timeout of 800 ms.
+ }
 }
 
 //uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t* record) {
