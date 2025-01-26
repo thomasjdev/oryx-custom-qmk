@@ -206,6 +206,19 @@ uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
  }
 }
 
+bool achordion_eager_mod(uint8_t mod) {
+  switch (mod) {
+    case MOD_LSFT:
+    case MOD_RSFT:
+    case MOD_LCTL:
+    case MOD_RCTL:
+      return true;  // Eagerly apply Shift and Ctrl mods.
+
+    default:
+      return false;
+  }
+}
+
 //uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t* record) {
 //  // If you quickly hold a tap-hold key after tapping it, the tap action is
 //  // repeated. Key repeating is useful e.g. for Vim navigation keys, but can
