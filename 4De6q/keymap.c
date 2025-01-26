@@ -1,6 +1,5 @@
 #include QMK_KEYBOARD_H
 #include "version.h"
-#include "features/achordion.h"
 #define MOON_LED_LEVEL LED_LEVEL
 #define ML_SAFE_RANGE SAFE_RANGE
 
@@ -106,7 +105,6 @@ bool rgb_matrix_indicators_user(void) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  if (!process_achordion(keycode, record)) { return false; }
   switch (keycode) {
 
     case RGB_SLD:
@@ -121,43 +119,5 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 
-void matrix_scan_user(void) {
-  achordion_task();
-}
 
-uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
- switch (tap_hold_keycode) {
-    default:
-      return 800;  // Otherwise use a timeout of 800 ms.
- }
-}
 
-bool achordion_eager_mod(uint8_t mod) {
-  switch (mod) {
-    case MOD_LSFT:
-    case MOD_RSFT:
-    case MOD_LCTL:
-    case MOD_RCTL:
-      return true;  // Eagerly apply Shift and Ctrl mods.
-
-    default:
-      return false;
-  }
-}
-
-//uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t* record) {
-//  // If you quickly hold a tap-hold key after tapping it, the tap action is
-//  // repeated. Key repeating is useful e.g. for Vim navigation keys, but can
-//  // lead to missed triggers in fast typing. Here, returning 0 means we
-//  // instead want to "force hold" and disable key repeating.
-//  switch (keycode) {
-//    case HOME_N:
-//    // Repeating is useful for Vim navigation keys.
-//    case QHOME_J:
-//    case QHOME_K:
-//    case QHOME_L:
-//      return QUICK_TAP_TERM;  // Enable key repeating.
-//    default:
-//      return 0;  // Otherwise, force hold and disable key repeating.
-//  }
-//}
